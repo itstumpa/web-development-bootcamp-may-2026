@@ -37,6 +37,35 @@ export const createUser = async (data: {
   });
 };
 
+export const searchUsers = async (query: string) => {
+  return prisma.user.findMany({
+    where: {
+      OR: [
+        {
+          name: {
+            contains: query,
+            mode: "insensitive",
+          },
+        },
+        {
+          email: {
+            contains: query,
+            mode: "insensitive",
+          },
+        },
+      ],
+    },
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      role: true,
+      createdAt: true,
+    },
+    take: 10, // important for performance
+  });
+};
+
 // GET ONE
 export const getUserById = async (id: string) => {
   const user = await prisma.user.findUnique({
@@ -52,6 +81,21 @@ export const getUserById = async (id: string) => {
 
   if (!user) throw new ApiError(404, "User not found");
   return user;
+};
+
+// ADMIN — get all users
+export const getAllUsers = async () => {
+  return prisma.user.findMany({
+    select: {
+      id: true,
+      name: true,
+      email: true,
+      role: true,
+      isEmailVerified: true,
+      createdAt: true,
+    },
+    orderBy: { createdAt: 'desc' },
+  });
 };
 
 // UPDATE
@@ -89,13 +133,10 @@ export const updateUser = async (
 
 // DELETE
 export const deleteUser = async (id: string) => {
-  const deleted = await prisma.user.deleteMany({
-    where: { id },
-  });
-
-  if (deleted.count === 0) {
+  try {
+    await prisma.user.delete({ where: { id } });
+    return { message: "User deleted successfully" };
+  } catch (error) {
     throw new ApiError(404, "User not found");
   }
-
-  return { message: "User deleted successfully" };
 };
