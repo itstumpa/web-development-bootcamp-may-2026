@@ -6,7 +6,7 @@ export const createUser = async (data: {
   name: string;
   email: string;
   password: string;
-  role?: "CUSTOMER" | "VENDOR";
+  role?: "USER" | "ADMIN";
 }) => {
   const existing = await prisma.user.findUnique({
     where: { email: data.email },
