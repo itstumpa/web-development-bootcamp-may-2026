@@ -10,6 +10,6 @@ router.use("/auth", authRoute);
 // router.use(authenticate);
 
 router.use("/users", UserRoutes);
-router.use("/conversations", ChatRoutes);
+router.use("/chat", ChatRoutes);
 
 export default router;

@@ -3,15 +3,16 @@ import catchAsync from "../../../utils/catchAsync";
 import sendResponse from "../../../utils/sendResponse";
 import { ChatService } from "./chat.service";
 import { getIO } from "../../../lib/socket";
+import ApiError from "../../../utils/apiErrors";
 
 const getConversation = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
 
-  const options = {
-    page: Number(req.query.page),
-    limit: Number(req.query.limit),
-    sortOrder: req.query.sortOrder as string,
-  };
+const options = {
+  page: Number(req.query.page) || 1,
+  limit: Number(req.query.limit) || 20,
+  sortOrder: (req.query.sortOrder as string) || "asc",
+};
 
   const conversation = await ChatService.getConversation(
     id as string,
@@ -39,7 +40,7 @@ const sendMessage = catchAsync(async (req: Request, res: Response) => {
 
   // Emit to other participants
   const io = getIO();
-  io.to(conversationId).emit("receive_message", newMessage);
+io.to(conversationId).emit("new_message", newMessage);
 
   sendResponse(res, {
     statusCode: 201,
@@ -51,7 +52,11 @@ const sendMessage = catchAsync(async (req: Request, res: Response) => {
 
 const getOrCreateConversation = catchAsync(
   async (req: Request, res: Response) => {
+
     const { otherUserId } = req.body;
+    if (req.user!.id === otherUserId) {
+  throw new ApiError(400, "You cannot start a conversation with yourself");
+}
 
     const conversation = await ChatService.getOrCreateConversation([
       req.user!.id,

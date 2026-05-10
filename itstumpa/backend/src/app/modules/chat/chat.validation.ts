@@ -18,9 +18,12 @@ const sendMessage = z.object({
   ),
 });
 
+
 const getOrCreateConversation = z.object({
   body: z.object({
-    otherUserId: z.string().cuid(),
+    participantIds: z
+      .array(z.string())
+      .length(2, "Exactly 2 participant IDs are required"),
   }),
 });
 
