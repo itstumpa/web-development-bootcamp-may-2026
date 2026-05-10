@@ -3,7 +3,7 @@ import { Request, Response, NextFunction } from "express";
 import { ZodObject, ZodError } from "zod";
 import ApiError from "../../utils/apiErrors";
 
-export const validate =
+export const validateRequest =
   (schema: ZodObject<any>) =>
   (req: Request, res: Response, next: NextFunction) => {
     try {

@@ -4,6 +4,7 @@ import { bootstrapApp } from "./app/bootstrap";
 import app from "./app";
 import { prisma } from "./lib/prisma";
 import config from "./app/config";
+import { initSocket } from "./lib/socket";
 
 // Start server
 async function startServer() {
@@ -14,6 +15,9 @@ async function startServer() {
     console.log("Database connected");
 
     const server = http.createServer(app);
+
+        //  Initialize Socket.IO
+    initSocket(server);
 
     server.listen(port, () => {
       console.log(`Server is running on http://localhost:${port} `);
