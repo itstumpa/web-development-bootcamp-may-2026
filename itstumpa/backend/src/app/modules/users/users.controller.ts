@@ -15,12 +15,17 @@ export const createUser = catchAsync(async (req: Request, res: Response) => {
 });
 
 export const getAllUsers = catchAsync(async (req: Request, res: Response) => {
-  const users = await UserService.getAllUsers();
+  const page = parseInt(req.query.page as string) || 1;
+  const limit = parseInt(req.query.limit as string) || 10;
+  
+  const result = await UserService.getAllUsers({ page, limit });
+  
   sendResponse(res, {
     statusCode: 200,
     success: true,
     message: 'Users fetched successfully',
-    data: users,
+    data: result.users,
+    meta: result.meta,
   });
 });
 

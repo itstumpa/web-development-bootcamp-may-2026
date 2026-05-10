@@ -84,18 +84,37 @@ export const getUserById = async (id: string) => {
 };
 
 // ADMIN — get all users
-export const getAllUsers = async () => {
-  return prisma.user.findMany({
-    select: {
-      id: true,
-      name: true,
-      email: true,
-      role: true,
-      isEmailVerified: true,
-      createdAt: true,
+export const getAllUsers = async (params: { page?: number; limit?: number }) => {
+  const page = params.page || 1;
+  const limit = params.limit || 10;
+  const skip = (page - 1) * limit;
+
+  const [users, total] = await Promise.all([
+    prisma.user.findMany({
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        role: true,
+        isEmailVerified: true,
+        createdAt: true,
+      },
+      orderBy: { createdAt: 'desc' },
+      take: limit,
+      skip,
+    }),
+    prisma.user.count(),
+  ]);
+
+  return {
+    users,
+    meta: {
+      total,
+      page,
+      limit,
+      totalPages: Math.ceil(total / limit),
     },
-    orderBy: { createdAt: 'desc' },
-  });
+  };
 };
 
 // UPDATE

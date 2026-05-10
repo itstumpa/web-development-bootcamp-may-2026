@@ -27,3 +27,10 @@ export const searchUsersSchema = z.object({
     q: z.string().optional().default(""),
   }),
 });
+
+export const paginationSchema = z.object({
+  query: z.object({
+    page: z.coerce.number().int().positive().optional(),
+    limit: z.coerce.number().int().positive().max(100).optional(),
+  }),
+});
