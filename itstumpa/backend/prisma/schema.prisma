@@ -11,6 +11,17 @@ enum Role {
   ADMIN
 }
 
+enum MessageStatus {
+  SENT
+  DELIVERED
+  READ
+}
+
+enum ConversationType {
+  DIRECT     // 1-on-1 (only type we use now)
+  GROUP      // 3+ people
+}
+
 model User {
   id                  String    @id @default(cuid())
   name                String
@@ -21,11 +32,74 @@ model User {
   emailVerifyExpiry   DateTime?
   passwordResetToken  String?
   passwordResetExpiry DateTime?
-
   role                Role      @default(USER)
-
-
+  
+  // Chat features
+  isOnline            Boolean   @default(false)
+  lastSeen            DateTime  @default(now())
+  
+  sentMessages        Message[]
+  participants        ConversationParticipant[]
+  
   createdAt           DateTime  @default(now())
   updatedAt           DateTime  @updatedAt
 }
 
+model Conversation {
+  id            String         @id @default(cuid())
+  type          ConversationType @default(DIRECT)
+  
+  participants  ConversationParticipant[]
+  messages      Message[]
+  
+  lastMessageAt DateTime       @default(now())
+  
+  createdAt     DateTime       @default(now())
+  updatedAt     DateTime       @updatedAt
+  
+  @@index([lastMessageAt(sort: Desc)])
+}
+
+model ConversationParticipant {
+  id             String       @id @default(cuid())
+  conversationId String
+  userId         String
+  
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+  
+  lastReadAt     DateTime?
+  
+  createdAt      DateTime     @default(now())
+  
+  @@unique([conversationId, userId])
+  @@index([userId])
+  @@index([conversationId])
+}
+
+model Message {
+  id             String        @id @default(cuid())
+  conversationId String
+  senderId       String
+  
+  conversation   Conversation  @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  sender         User          @relation(fields: [senderId], references: [id], onDelete: Cascade)
+  
+  content        String?       
+  
+  // File attachment
+  fileUrl        String?
+  fileName       String?
+  fileType       String?       // image/jpeg, application/pdf
+  fileSize       Int?          // bytes
+  
+  status         MessageStatus @default(SENT)
+  deliveredAt    DateTime?
+  readAt         DateTime?
+  
+  createdAt      DateTime      @default(now())
+  updatedAt      DateTime      @updatedAt
+  
+  @@index([conversationId, createdAt(sort: Desc)])
+  @@index([senderId])
+}
