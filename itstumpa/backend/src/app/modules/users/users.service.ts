@@ -1,45 +1,38 @@
 import bcrypt from "bcrypt";
 import { prisma } from "../../../lib/prisma";
+import { Role } from "@prisma/client";
+import ApiError from "../../../utils/apiErrors";
 
 // CREATE
 export const createUser = async (data: {
   name: string;
   email: string;
   password: string;
-  role?: "USER" | "ADMIN";
+  role?: Role;
 }) => {
   const existing = await prisma.user.findUnique({
     where: { email: data.email },
   });
 
   if (existing) {
-    throw new Error("Email already in use");
+    throw new ApiError(409, "Email already in use");
   }
 
   const hashedPassword = await bcrypt.hash(data.password, 10);
 
-  const user = await prisma.user.create({
+  return prisma.user.create({
     data: {
-      ...data,
+      name: data.name,
+      email: data.email,
       password: hashedPassword,
+      role: data.role ?? Role.USER,
     },
-  });
-
-  // never return password
-  const { password, ...userWithoutPassword } = user;
-  return userWithoutPassword;
-};
-
-// GET ALL (admin use)
-export const getAllUsers = async () => {
-  return prisma.user.findMany({
     select: {
       id: true,
       name: true,
       email: true,
       role: true,
       createdAt: true,
-      // password is excluded
     },
   });
 };
@@ -57,7 +50,7 @@ export const getUserById = async (id: string) => {
     },
   });
 
-  if (!user) throw new Error("User not found");
+  if (!user) throw new ApiError(404, "User not found");
   return user;
 };
 
@@ -67,7 +60,20 @@ export const updateUser = async (
   data: { name?: string; email?: string }
 ) => {
   const user = await prisma.user.findUnique({ where: { id } });
-  if (!user) throw new Error("User not found");
+  if (!user) throw new ApiError(404, "User not found");
+
+  if (data.email) {
+    const emailExists = await prisma.user.findFirst({
+      where: {
+        email: data.email,
+        NOT: { id },
+      },
+    });
+
+    if (emailExists) {
+      throw new ApiError(409, "Email already in use");
+    }
+  }
 
   return prisma.user.update({
     where: { id },
@@ -83,9 +89,13 @@ export const updateUser = async (
 
 // DELETE
 export const deleteUser = async (id: string) => {
-  const user = await prisma.user.findUnique({ where: { id } });
-  if (!user) throw new Error("User not found");
+  const deleted = await prisma.user.deleteMany({
+    where: { id },
+  });
 
-  await prisma.user.delete({ where: { id } });
+  if (deleted.count === 0) {
+    throw new ApiError(404, "User not found");
+  }
+
   return { message: "User deleted successfully" };
 };
