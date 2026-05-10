@@ -25,10 +25,7 @@ const config = {
   auto_seed_super_admin: process.env.AUTO_SEED_SUPER_ADMIN || "true",
   super_admin_email: process.env.SUPER_ADMIN_EMAIL,
   super_admin_password: process.env.SUPER_ADMIN_PASSWORD,
-  customer_one_email: process.env.CUSTOMER_ONE_EMAIL,
-  customer_one_password: process.env.CUSTOMER_ONE_PASSWORD,
-  customer_two_email: process.env.CUSTOMER_TWO_EMAIL,
-  customer_two_password: process.env.CUSTOMER_TWO_PASSWORD,
+
 
 };
 
