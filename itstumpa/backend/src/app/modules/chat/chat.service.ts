@@ -124,8 +124,18 @@ const createConversation = async (participantIds: string[]) => {
 };
 
 const getOrCreateConversation = async (participantIds: string[]) => {
-  if (participantIds.length !== 2) {
-    throw new ApiError(400, "Direct conversation requires exactly 2 users");
+    const validParticipantIds = participantIds.filter(
+    (id): id is string => Boolean(id)
+  );
+  if (validParticipantIds.length !== 2) {
+    throw new ApiError(400, "Direct conversation requires exactly 2 valid users");
+  }
+
+  if (validParticipantIds[0] === validParticipantIds[1]) {
+    throw new ApiError(
+      400,
+      "You cannot create a conversation with yourself"
+    );
   }
 
   const existingConversation = await prisma.conversation.findFirst({
@@ -133,7 +143,7 @@ const getOrCreateConversation = async (participantIds: string[]) => {
       type: "DIRECT",
       participants: {
         every: {
-          userId: { in: participantIds },
+          userId: { in: validParticipantIds },
         },
       },
     },
@@ -156,7 +166,7 @@ const getOrCreateConversation = async (participantIds: string[]) => {
 
   if (existingConversation) return existingConversation;
 
-  return createConversation(participantIds);
+  return createConversation(validParticipantIds);
 };
 
 const deleteConversation = async (conversationId: string, userId: string) => {

@@ -25,7 +25,12 @@ const config = {
   auto_seed_super_admin: process.env.AUTO_SEED_SUPER_ADMIN || "true",
   super_admin_email: process.env.SUPER_ADMIN_EMAIL,
   super_admin_password: process.env.SUPER_ADMIN_PASSWORD,
-
+  
+cloudinary:{
+  api_key: process.env.CLOUDINARY_API_KEY,
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_secret: process.env.CLOUDINARY_API_SECRET,
+}
 
 };
 
