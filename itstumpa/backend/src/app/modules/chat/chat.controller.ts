@@ -4,6 +4,7 @@ import sendResponse from "../../../utils/sendResponse";
 import { ChatService } from "./chat.service";
 import { getIO } from "../../../lib/socket";
 import ApiError from "../../../utils/apiErrors";
+import { uploadToCloudinary } from "../../../utils/uploadToCloudinary";
 
 const getConversation = catchAsync(async (req: Request, res: Response) => {
   const { id } = req.params;
@@ -29,18 +30,42 @@ const options = {
 });
 
 const sendMessage = catchAsync(async (req: Request, res: Response) => {
-  const { conversationId, content, fileData } = req.body;
+  const { conversationId, content } = req.body;
+  const file = req.file;
+
+  if (!content && !file) {
+    throw new ApiError(400, "Message must have content or file");
+  }
+
+  let fileData;
+
+  if (file) {
+    const isImage = file.mimetype.startsWith("image/");
+    const resourceType = isImage ? "image" : "raw";
+
+    const uploadResult = await uploadToCloudinary(
+      file.buffer,
+      "chat-uploads",
+      resourceType
+    );
+
+    fileData = {
+      fileUrl: uploadResult.secure_url,
+      fileName: file.originalname,
+      fileType: file.mimetype,
+      fileSize: file.size,
+    };
+  }
 
   const newMessage = await ChatService.createMessage(
     conversationId,
     req.user!.id,
     content,
-    fileData,
+    fileData
   );
 
-  // Emit to other participants
   const io = getIO();
-io.to(conversationId).emit("new_message", newMessage);
+  io.to(conversationId).emit("receive_message", newMessage);
 
   sendResponse(res, {
     statusCode: 201,
@@ -53,10 +78,7 @@ io.to(conversationId).emit("new_message", newMessage);
 const getOrCreateConversation = catchAsync(
   async (req: Request, res: Response) => {
 
-    const { otherUserId } = req.body;
-    if (req.user!.id === otherUserId) {
-  throw new ApiError(400, "You cannot start a conversation with yourself");
-}
+    const { otherUserId  } = req.body;
 
     const conversation = await ChatService.getOrCreateConversation([
       req.user!.id,

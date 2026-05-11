@@ -1,10 +1,10 @@
 import { Router } from 'express';
 import { ChatController } from './chat.controller';
 import { ChatValidation } from './chat.validation';
-// import auth from '../../middlewares/auth'; // adjust path
 import { validateRequest } from '../../middlewares/validateRequest';
 import { authorize } from '../../middlewares/authorize';
 import { authenticate } from '../../middlewares/authenticate';
+import { uploadFile } from '../../middlewares/upload';
 
 const router = Router();
 router.use(authenticate);
@@ -19,7 +19,7 @@ router.post( '/conversations', validateRequest(ChatValidation.getOrCreateConvers
 router.get('/conversations/:id', validateRequest(ChatValidation.getConversation), ChatController.getConversation);
 
 // Send message
-router.post('/messages', validateRequest(ChatValidation.sendMessage), ChatController.sendMessage);
+router.post('/messages', uploadFile.single("file"), validateRequest(ChatValidation.sendMessage), ChatController.sendMessage);
 
 // Delete conversation
 router.delete('/conversations/:conversationId', validateRequest(ChatValidation.deleteConversation), ChatController.deleteConversation);

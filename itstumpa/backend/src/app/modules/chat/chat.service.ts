@@ -46,12 +46,12 @@ const getConversation = async (
     take: limit,
   });
 
-  const participantIds = conversation.participants.map((p) => p.userId);
+  const otherUserId = conversation.participants.map((p) => p.userId);
 
   return {
     id: conversation.id,
     type: conversation.type,
-    participants: participantIds,
+    participants: otherUserId,
     page,
     limit,
     messages,
