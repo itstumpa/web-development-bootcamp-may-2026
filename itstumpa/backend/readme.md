@@ -119,6 +119,8 @@ A real-time chat platform with file sharing and admin moderation built with Node
 ```
 
 ## 📁 Project Structure
+
+```
 src/
 ├── app/
 │   ├── config/
@@ -163,6 +165,8 @@ src/
 │   └── express.d.ts
 ├── app.ts
 └── server.ts
+
+```
 
 ## 📚 API Documentation
 
