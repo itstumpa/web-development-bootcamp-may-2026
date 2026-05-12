@@ -1,16 +1,43 @@
-// src/middlewares/authorize.ts
 import { Request, Response, NextFunction } from "express";
 import { Role } from "@prisma/client";
 import ApiError from "../../utils/apiErrors";
 
-export const authorize = (...roles: Role[]) =>
+export const authorize =
+  (...roles: Role[]) =>
   (req: Request, res: Response, next: NextFunction) => {
-    if (!req.user) return next(new ApiError(401, "Unauthorized"));
+    if (!req.user) {
+      return next(new ApiError(401, "Unauthorized"));
+    }
 
-    if (!roles.includes(req.user.role)) {
+    // ─────────────────────────────
+    // Normalize user role safely
+    // ─────────────────────────────
+    const userRole = String((req.user as any).role)
+      .toUpperCase()
+      .trim();
+
+    const allowedRoles = roles.map((r) =>
+      String(r).toUpperCase().trim()
+    );
+
+    // ─────────────────────────────
+    // Super admin bypass (safe check)
+    // ─────────────────────────────
+    if (userRole === "ADMIN") {
+      return next();
+    }
+
+    // ─────────────────────────────
+    // Role check
+    // ─────────────────────────────
+    if (!allowedRoles.includes(userRole)) {
       return next(
-        new ApiError(403, "Forbidden: you don't have access to this resource")
+        new ApiError(
+          403,
+          "Forbidden: you don't have access to this resource"
+        )
       );
     }
+
     next();
   };
