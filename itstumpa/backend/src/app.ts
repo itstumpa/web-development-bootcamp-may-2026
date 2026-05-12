@@ -7,7 +7,7 @@ import config from "./app/config/index";
 import notFound from "./app/middlewares/notFound";
 import globalErrorHandler from "./app/middlewares/globalErrorHandler";
 import cookieParser from "cookie-parser";
-// import { rateLimiter,  } from "./app/middlewares/rateLimiter";
+import { rateLimiter,  } from "./app/middlewares/rateLimiter";
 import compression from "compression";
 
 
@@ -30,7 +30,7 @@ app.use(passport.initialize());
 // Gzip compression
 app.use(compression());
 // Redis Rate limit 
-// app.use(rateLimiter());
+app.use(rateLimiter());
 
 // MAIN ROUTE
 app.use("/api/v1", router);
