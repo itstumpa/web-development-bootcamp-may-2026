@@ -23,7 +23,7 @@ export const authenticate = (
       if (err) return next(err);
 
       if (user) {
-        req.user = user; // ✅ access token valid — proceed
+        req.user = user; 
         return next();
       }
 

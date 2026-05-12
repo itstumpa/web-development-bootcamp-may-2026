@@ -72,7 +72,6 @@ const suspendUser = async (userId: string, reason?: string) => {
     data: {
       isSuspended: true,
       suspendedAt: new Date(),
-      suspendedReason: reason,
     },
     select: {
       id: true,
@@ -104,7 +103,6 @@ const unsuspendUser = async (userId: string) => {
     data: {
       isSuspended: false,
       suspendedAt: null,
-      suspendedReason: null,
     },
     select: {
       id: true,

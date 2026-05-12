@@ -9,37 +9,26 @@ export const authorize =
       return next(new ApiError(401, "Unauthorized"));
     }
 
-    // ─────────────────────────────
-    // Normalize user role safely
-    // ─────────────────────────────
-    const userRole = String((req.user as any).role)
-      .toUpperCase()
-      .trim();
+    const userRole = String(req.user.role).toUpperCase().trim();
+
+    // ✅ GLOBAL
+    if (userRole === "SUPER_ADMIN") {
+      return next();
+    }
 
     const allowedRoles = roles.map((r) =>
       String(r).toUpperCase().trim()
     );
 
-    // ─────────────────────────────
-    // Super admin bypass (safe check)
-    // ─────────────────────────────
-    if (userRole === "SUPER_ADMIN") {
-      return next();
-    }
-
-    // ─────────────────────────────
-    // Role check
-    // ─────────────────────────────
     if (!allowedRoles.includes(userRole)) {
       return next(
         new ApiError(
           403,
-          "Forbidden: you don't have access to this resource, Super admin only"
+          "Forbidden: you don't have access to this resource"
         )
       );
     }
 
     next();
   };
-
   
