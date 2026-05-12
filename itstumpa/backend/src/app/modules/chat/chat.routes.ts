@@ -8,6 +8,7 @@ import { uploadFile } from '../../middlewares/upload';
 
 const router = Router();
 router.use(authenticate);
+router.use(authorize("USER"));
 
 // Get user's conversation list
 router.get('/conversations', ChatController.getUserConversations);

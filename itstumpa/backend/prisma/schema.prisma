@@ -9,6 +9,7 @@ datasource db {
 enum Role {
   USER
   ADMIN
+  SUPER_ADMIN
 }
 
 enum MessageStatus {
@@ -18,8 +19,8 @@ enum MessageStatus {
 }
 
 enum ConversationType {
-  DIRECT     // 1-on-1 (only type we use now)
-  GROUP      // 3+ people
+  DIRECT    
+  GROUP     
 }
 
 model User {
@@ -37,6 +38,10 @@ model User {
   // Chat features
   isOnline            Boolean   @default(false)
   lastSeen            DateTime  @default(now())
+  
+  // Suspension
+  isSuspended         Boolean   @default(false)
+  suspendedAt         DateTime?
   
   sentMessages        Message[]
   participants        ConversationParticipant[]

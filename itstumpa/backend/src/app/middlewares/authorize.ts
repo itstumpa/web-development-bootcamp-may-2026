@@ -23,7 +23,7 @@ export const authorize =
     // ─────────────────────────────
     // Super admin bypass (safe check)
     // ─────────────────────────────
-    if (userRole === "ADMIN") {
+    if (userRole === "SUPER_ADMIN") {
       return next();
     }
 
@@ -34,10 +34,12 @@ export const authorize =
       return next(
         new ApiError(
           403,
-          "Forbidden: you don't have access to this resource"
+          "Forbidden: you don't have access to this resource, Super admin only"
         )
       );
     }
 
     next();
   };
+
+  

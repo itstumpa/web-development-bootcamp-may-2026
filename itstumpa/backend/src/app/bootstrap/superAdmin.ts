@@ -34,11 +34,11 @@ export const ensureSuperAdmin = async (): Promise<void> => {
 
   if (existingUser) {
     // Update role if needed
-    if (existingUser.role !== Role.ADMIN) {
+    if (existingUser.role !== Role.SUPER_ADMIN) {
       await prisma.user.update({
         where: { id: existingUser.id },
         data: {
-          role: Role.ADMIN,
+          role: Role.SUPER_ADMIN,
           isEmailVerified: true,
         },
       });
@@ -59,7 +59,7 @@ export const ensureSuperAdmin = async (): Promise<void> => {
       name: "Super Admin",
       email,
       password: hashedPassword,
-      role: Role.ADMIN,
+      role: Role.SUPER_ADMIN,
       isEmailVerified: true,
     },
   });

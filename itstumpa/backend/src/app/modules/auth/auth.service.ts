@@ -8,6 +8,7 @@ import ApiError from "../../../utils/apiErrors";
 import { setAuthCookies } from "../../../utils/cookieHelpers";
 import { sendEmail } from "../../../utils/sendEmail";
 import config from "../../config/index";
+import { Role } from ".prisma/client/default";
 
 // ── Token helpers ─────────────────────────────────────────────────────────────
 
@@ -32,7 +33,7 @@ export const signup = async (data: {
   name: string;
   email: string;
   password: string;
-  role?: "USER" | "ADMIN";
+  role?: Role;
 }) => {
   const existing = await prisma.user.findUnique({
     where: { email: data.email },
