@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import NewChatModal from "./NewChatModal";
 import { useRouter, useParams } from "next/navigation";
 import api from "@/lib/axios";
 import { useAppDispatch, useAppSelector } from "@/hooks/redux";
@@ -27,6 +28,7 @@ export default function ConversationSidebar({ onSelect }: { onSelect?: () => voi
   const { user } = useAppSelector((s) => s.auth);
   const { conversations, isLoading } = useAppSelector((s) => s.conversations);
   const [search, setSearch] = useState("");
+  const [showNewChat, setShowNewChat] = useState(false);
 
   useEffect(() => {
     const fetchConversations = async () => {
@@ -87,6 +89,21 @@ export default function ConversationSidebar({ onSelect }: { onSelect?: () => voi
         />
       </div>
 
+      <div className="flex items-center gap-2">
+  <button
+    onClick={() => setShowNewChat(true)}
+    className="text-[#94A3B8] hover:text-[#06B6D4] transition-colors text-xs px-2 py-1 rounded-lg hover:bg-[#06B6D4]/10"
+  >
+    + New
+  </button>
+  <button
+    onClick={handleLogout}
+    className="text-[#94A3B8] hover:text-red-400 transition-colors text-xs px-2 py-1 rounded-lg hover:bg-red-400/10"
+  >
+    Logout
+  </button>
+</div>
+
       {/* Conversations */}
       <div className="flex-1 overflow-y-auto">
         {isLoading ? (
@@ -141,6 +158,7 @@ export default function ConversationSidebar({ onSelect }: { onSelect?: () => voi
           ))
         )}
       </div>
+      {showNewChat && <NewChatModal onClose={() => setShowNewChat(false)} />}
     </aside>
   );
 }

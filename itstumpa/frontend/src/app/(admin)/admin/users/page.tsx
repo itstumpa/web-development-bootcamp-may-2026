@@ -2,6 +2,8 @@
 
 import { useEffect, useState } from "react";
 import api from "@/lib/axios";
+import UserDetailModal from "@/components/admin/UserDetailModal";
+
 
 interface AdminUser {
   id: string;
@@ -16,6 +18,7 @@ export default function AdminUsersPage() {
   const [users, setUsers] = useState<AdminUser[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [actionLoading, setActionLoading] = useState<string | null>(null);
+const [selectedUserId, setSelectedUserId] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchUsers = async () => {
@@ -73,8 +76,7 @@ setUsers(Array.isArray(result) ? result : result.users ?? result.data ?? []);
               </thead>
               <tbody>
                 {users.map((u) => (
-                  <tr key={u.id} className="border-b border-[#334155]/50 hover:bg-[#0F1419]/30 transition-colors">
-                    <td className="px-5 py-4">
+<tr key={u.id} onClick={() => setSelectedUserId(u.id)} className="border-b border-[#334155]/50 hover:bg-[#0F1419]/30 transition-colors cursor-pointer">                    <td className="px-5 py-4">
                       <div className="flex items-center gap-3">
                         <div className="w-8 h-8 rounded-full bg-linear-to-br from-[#8B5CF6] to-[#06B6D4] flex items-center justify-center text-white font-bold text-xs shrink-0">
                           {u.name[0].toUpperCase()}
@@ -132,7 +134,7 @@ setUsers(Array.isArray(result) ? result : result.users ?? result.data ?? []);
             {users.map((u) => (
               <div key={u.id} className="px-4 py-4 flex flex-col gap-2">
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center gap-3">
+  <div onClick={() => setSelectedUserId(u.id)} className="flex items-center gap-3 cursor-pointer">
                     <div className="w-9 h-9 rounded-full bg-linear-to-br from-[#8B5CF6] to-[#06B6D4] flex items-center justify-center text-white font-bold text-sm">
                       {u.name[0].toUpperCase()}
                     </div>
@@ -167,6 +169,12 @@ setUsers(Array.isArray(result) ? result : result.users ?? result.data ?? []);
           </div>
         </div>
       )}
+      {selectedUserId && (
+  <UserDetailModal
+    userId={selectedUserId}
+    onClose={() => setSelectedUserId(null)}
+  />
+)}
     </div>
   );
 }
