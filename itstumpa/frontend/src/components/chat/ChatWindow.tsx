@@ -152,21 +152,21 @@ export default function ChatWindow({ conversationId }: { conversationId: string 
       <div className="flex items-center gap-3 px-4 py-4 border-b border-[#334155] bg-[#1E2530] shrink-0">
         <div className="relative shrink-0">
           <div className="w-10 h-10 rounded-full bg-linear-to-br from-[#8B5CF6] to-[#06B6D4] flex items-center justify-center text-white font-bold text-sm">
-            {conversation?.participant.name[0].toUpperCase() ?? "?"}
+            {conversation?.otherUser?.name[0].toUpperCase() ?? "?"}
           </div>
-          {conversation?.participant.isOnline && (
+          {conversation?.otherUser?.isOnline && (
             <span className="absolute bottom-0 right-0 w-2.5 h-2.5 bg-[#10B981] rounded-full border-2 border-[#1E2530]" />
           )}
         </div>
         <div>
-          <p className="text-[#F1F5F9] font-semibold text-sm">{conversation?.participant.name}</p>
+          <p className="text-[#F1F5F9] font-semibold text-sm">{conversation?.otherUser?.name}</p>
           <p className="text-xs text-[#94A3B8]">
             {isTyping ? (
               <span className="text-[#06B6D4]">typing...</span>
-            ) : conversation?.participant.isOnline ? (
+            ) : conversation?.otherUser?.isOnline ? (
               <span className="text-[#10B981]">Online</span>
             ) : (
-              `Last seen ${conversation?.participant.lastSeen ? new Date(conversation.participant.lastSeen).toLocaleString() : "recently"}`
+              `Last seen ${conversation?.otherUser?.lastSeen ? new Date(conversation.otherUser?.lastSeen).toLocaleString() : "recently"}`
             )}
           </p>
         </div>

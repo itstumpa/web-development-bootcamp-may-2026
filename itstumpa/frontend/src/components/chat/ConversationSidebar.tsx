@@ -50,9 +50,9 @@ export default function ConversationSidebar({ onSelect }: { onSelect?: () => voi
     router.push("/login");
   };
 
-  const filtered = conversations.filter((c: Conversation) =>
-    c.participant.name.toLowerCase().includes(search.toLowerCase())
-  );
+const filtered = conversations.filter((c: Conversation) =>
+  c.otherUser?.name?.toLowerCase().includes(search.toLowerCase())
+);
 
   return (
     <aside className="flex flex-col h-full bg-[#1E2530] border-r border-[#334155]">
@@ -128,15 +128,15 @@ export default function ConversationSidebar({ onSelect }: { onSelect?: () => voi
             >
               <div className="relative shrink-0">
                 <div className="w-11 h-11 rounded-full bg-linear-to-br from-[#8B5CF6] to-[#06B6D4] flex items-center justify-center text-white font-bold text-sm">
-                  {conv.participant.name[0].toUpperCase()}
+                  {conv.otherUser?.name[0].toUpperCase()}
                 </div>
-                {conv.participant.isOnline && (
+                {conv.otherUser?.isOnline && (
                   <span className="absolute bottom-0 right-0 w-3 h-3 bg-[#10B981] rounded-full border-2 border-[#1E2530]" />
                 )}
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between mb-0.5">
-                  <p className="text-[#F1F5F9] text-sm font-medium truncate">{conv.participant.name}</p>
+                  <p className="text-[#F1F5F9] text-sm font-medium truncate">{conv.otherUser?.name}</p>
                   {conv.lastMessage && (
                     <span className="text-[#94A3B8] text-xs shrink-0 ml-2">
                       {formatTime(conv.lastMessage.createdAt)}

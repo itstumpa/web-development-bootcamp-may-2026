@@ -111,16 +111,23 @@ setUsers(Array.isArray(result) ? result : result.users ?? result.data ?? []);
                     <td className="px-5 py-4">
                       {u.role !== "SUPER_ADMIN" && (
                         <button
-                          onClick={() => handleSuspend(u.id, u.isSuspended)}
-                          disabled={actionLoading === u.id}
-                          className={`text-xs px-3 py-1.5 rounded-lg font-medium transition-colors disabled:opacity-50 ${
-                            u.isSuspended
-                              ? "bg-[#10B981]/10 text-[#10B981] hover:bg-[#10B981]/20"
-                              : "bg-red-500/10 text-red-400 hover:bg-red-500/20"
-                          }`}
-                        >
-                          {actionLoading === u.id ? "..." : u.isSuspended ? "Unsuspend" : "Suspend"}
-                        </button>
+  onClick={(e) => {
+    e.stopPropagation();
+    handleSuspend(u.id, u.isSuspended);
+  }}
+  disabled={actionLoading === u.id}
+  className={`text-xs px-3 py-1.5 rounded-lg font-medium transition-colors disabled:opacity-50 ${
+    u.isSuspended
+      ? "bg-[#10B981]/10 text-[#10B981] hover:bg-[#10B981]/20"
+      : "bg-red-500/10 text-red-400 hover:bg-red-500/20"
+  }`}
+>
+  {actionLoading === u.id
+    ? "..."
+    : u.isSuspended
+    ? "Unsuspend"
+    : "Suspend"}
+</button>
                       )}
                     </td>
                   </tr>
@@ -152,17 +159,24 @@ setUsers(Array.isArray(result) ? result : result.users ?? result.data ?? []);
                   </span>
                 </div>
                 {u.role !== "SUPER_ADMIN" && (
-                  <button
-                    onClick={() => handleSuspend(u.id, u.isSuspended)}
-                    disabled={actionLoading === u.id}
-                    className={`w-full text-xs py-2 rounded-lg font-medium transition-colors disabled:opacity-50 ${
-                      u.isSuspended
-                        ? "bg-[#10B981]/10 text-[#10B981]"
-                        : "bg-red-500/10 text-red-400"
-                    }`}
-                  >
-                    {actionLoading === u.id ? "..." : u.isSuspended ? "Unsuspend" : "Suspend"}
-                  </button>
+                 <button
+  onClick={(e) => {
+    e.stopPropagation();
+    handleSuspend(u.id, u.isSuspended);
+  }}
+  disabled={actionLoading === u.id}
+  className={`w-full text-xs py-2 rounded-lg font-medium transition-colors disabled:opacity-50 ${
+    u.isSuspended
+      ? "bg-[#10B981]/10 text-[#10B981]"
+      : "bg-red-500/10 text-red-400"
+  }`}
+>
+  {actionLoading === u.id
+    ? "..."
+    : u.isSuspended
+    ? "Unsuspend"
+    : "Suspend"}
+</button>
                 )}
               </div>
             ))}

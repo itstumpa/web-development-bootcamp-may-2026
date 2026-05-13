@@ -23,8 +23,19 @@ export interface Message {
 
 export interface Conversation {
   id: string;
-  participant: User;
-  lastMessage?: Message;
+  otherUser: {
+    id: string;
+    name: string;
+    email: string;
+    isOnline: boolean;
+    lastSeen: string;
   unreadCount: number;
   updatedAt: string;
+  };
+  lastMessage?: {
+    id: string;
+    content: string;
+    senderId: string;
+    createdAt: string;
+  };
 }
