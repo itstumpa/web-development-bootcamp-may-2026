@@ -10,9 +10,9 @@ router.use(authenticate);
 
 router.get('/search', validateRequest(searchUsersSchema), UserController.searchUsers);
 router.post('/', validateRequest(createUserSchema), UserController.createUser);
-router.get('/', authorize('ADMIN'), UserController.getAllUsers);
+router.get('/', UserController.getAllUsers);
 router.get('/:id', validateRequest(userIdParamSchema), UserController.getUserById);
 router.patch('/:id', authorize('ADMIN'), validateRequest(updateUserSchema), UserController.updateUser);
-router.delete('/:id', UserController.deleteUser);
+router.delete('/:id', authorize('ADMIN'), UserController.deleteUser);
 
 export default router;

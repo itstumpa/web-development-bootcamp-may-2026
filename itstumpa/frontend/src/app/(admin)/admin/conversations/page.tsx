@@ -20,6 +20,8 @@ export default function AdminConversationsPage() {
       try {
         const res = await api.get("/admin/conversations");
         setConversations(res.data.data);
+        const result = res.data.data;
+setConversations(Array.isArray(result) ? result : result.conversations ?? result.data ?? []);
       } finally {
         setIsLoading(false);
       }
