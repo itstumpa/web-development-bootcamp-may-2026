@@ -33,6 +33,18 @@ app.use(compression());
 // Redis Rate limit 
 app.use(rateLimiter());
 
+// ── Health Check ───────────────────────────────────────────────────────
+app.get("/health", (req, res) => {
+  res.json({
+    status: "ok",
+    uptime: process.uptime(),
+    service: "livechat-api",
+    version: "1.0.0",
+    timestamp: new Date().toISOString(),
+    environment: process.env.NODE_ENV,
+  });
+});
+
 // MAIN ROUTE
 app.use("/api/v1", router);
 
@@ -45,7 +57,7 @@ app.get("/", (_req: Request, res: Response) => {
   });
 });
 
-app.use(globalErrorHandler);
 app.use(notFound);
+app.use(globalErrorHandler);
 
 export default app;
