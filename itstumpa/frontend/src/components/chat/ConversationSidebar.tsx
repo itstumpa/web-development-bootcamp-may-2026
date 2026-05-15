@@ -145,7 +145,10 @@ const filtered = conversations.filter((c: Conversation) =>
                 </div>
                 <div className="flex items-center justify-between">
                   <p className="text-[#94A3B8] text-xs truncate max-w-[160px]">
-                    {conv.lastMessage?.content ?? (conv.lastMessage?.fileUrl ? "📎 File" : "No messages yet")}
+{conv.lastMessage?.content ??
+  (conv.lastMessage && "fileUrl" in conv.lastMessage && conv.lastMessage.fileUrl
+    ? "📎 File"
+    : "No messages yet")}
                   </p>
                   {conv.unreadCount > 0 && (
                     <span className="bg-[#06B6D4] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center shrink-0 ml-1">
