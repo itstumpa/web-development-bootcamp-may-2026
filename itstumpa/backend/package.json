@@ -20,6 +20,11 @@
   "license": "ISC",
   "type": "commonjs",
   "devDependencies": {
+    
+  },
+  "dependencies": {
+    "@prisma/adapter-pg": "^7.3.0",
+    "@prisma/client": "^7.4.2",
     "@types/bcrypt": "^6.0.0",
     "@types/compression": "^1.8.1",
     "@types/cookie": "^0.6.0",
@@ -43,11 +48,7 @@
     "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "tsx": "^4.21.0",
-    "typescript": "^5.9.3"
-  },
-  "dependencies": {
-    "@prisma/adapter-pg": "^7.3.0",
-    "@prisma/client": "^7.4.2",
+    "typescript": "^5.9.3",
     "axios": "^1.13.4",
     "bcrypt": "^6.0.0",
     "cloudinary": "^2.9.0",
