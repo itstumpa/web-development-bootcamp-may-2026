@@ -1,36 +1,119 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# LiveChat — Frontend
+
+A real-time chat platform frontend built with Next.js 16, TypeScript, and Socket.IO. WhatsApp-inspired dark UI with mesh gradients, role-based dashboards, and full messaging features.
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Framework | Next.js 16 (App Router, Turbopack) |
+| Language | TypeScript |
+| Styling | Tailwind CSS v4 |
+| State | Redux Toolkit |
+| Real-time | Socket.IO Client |
+| Forms | React Hook Form + Zod |
+| HTTP | Axios |
+| Auth | httpOnly cookies (JWT) |
+
+---
+
+## Features
+
+- 🔐 **Auth** — Login, signup, email verification, forgot password
+- 💬 **Real-time messaging** — Socket.IO powered instant delivery
+- 📎 **File sharing** — Images and documents via Cloudinary
+- ✅ **Read receipts** — Delivered/read indicators per message
+- ⌨️ **Typing indicators** — Live typing status per conversation
+- 🟢 **Online/offline status** — Real-time presence with last seen
+- 📜 **Infinite scroll** — Cursor-based paginated message history
+- 🔍 **User search** — Find and start conversations with pagination
+- 👑 **Admin dashboard** — Stats, user management, conversation moderation
+- 🚫 **Suspend/unsuspend users** — Admin moderation controls
+- 📱 **Fully responsive** — 320px to 1600px, mobile drawer navigation
+
+---
+
+## Project Structure
+
+```
+src/
+├── app/
+│   ├── (main)/          # Landing page
+│   ├── (auth)/          # Login, signup, verify-email, forgot-password
+│   ├── (dashboard)/     # User chat dashboard
+│   └── (admin)/         # Admin panel
+├── components/
+│   ├── chat/            # ConversationSidebar, ChatWindow, NewChatModal
+│   ├── layout/          # Navbar, AdminSidebar, ReduxProvider
+│   └── admin/           # UserDetailModal
+├── store/
+│   └── slices/          # authSlice, conversationsSlice, messagesSlice
+├── lib/                 # axios.ts, socket.ts
+├── hooks/               # Typed Redux hooks
+└── types/               # Shared TypeScript interfaces
+```
+
+---
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
+
+- Node.js 18+
+- Backend running at `http://localhost:5000`
+
+
+### Environment
+
+Create `.env.local` in the root:
+
+```env
+NEXT_PUBLIC_BACKEND_URL=http://localhost:5000
+```
+
+### Run
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+---
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Role-based Routing
 
-## Learn More
+| Role | Redirect |
+|---|---|
+| `USER` | `/dashboard` |
+| `ADMIN` | `/admin` |
+| `SUPER_ADMIN` | `/admin` (full access) |
 
-To learn more about Next.js, take a look at the following resources:
+Route protection is handled via `proxy.ts` (Next.js 16 middleware).
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+---
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Backend
 
-## Deploy on Vercel
+This frontend connects to a separate Node.js + Express + Socket.IO + Prisma backend.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+> Backend repo: [LiveChat Backend](https://github.com/itstumpa)
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+---
+
+## Color Palette
+
+| Token | Value | Usage |
+|---|---|---|
+| Base | `#0F1419` | Background |
+| Secondary | `#1E2530` | Cards, sidebar |
+| Primary | `#06B6D4` | Cyan accent |
+| Accent Purple | `#8B5CF6` | Gradient start |
+| Accent Green | `#10B981` | Online status |
+| Bubble Sent | `#0E7490` | Outgoing messages |
+| Bubble Received | `#1E293B` | Incoming messages |
+
+---
+
