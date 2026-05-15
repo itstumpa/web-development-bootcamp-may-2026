@@ -29,13 +29,14 @@ export interface Conversation {
     email: string;
     isOnline: boolean;
     lastSeen: string;
+  }; 
   unreadCount: number;
   updatedAt: string;
-  };
   lastMessage?: {
     id: string;
-    content: string;
+    content?: string;
     senderId: string;
     createdAt: string;
+    fileUrl?: string;
   };
 }
