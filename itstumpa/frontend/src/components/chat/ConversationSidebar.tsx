@@ -92,13 +92,13 @@ const filtered = conversations.filter((c: Conversation) =>
       <div className="flex items-center gap-2">
   <button
     onClick={() => setShowNewChat(true)}
-    className="text-[#94A3B8] hover:text-[#06B6D4] transition-colors text-xs px-2 py-1 rounded-lg hover:bg-[#06B6D4]/10"
+    className="text-[#94A3B8] hover:text-primary transition-colors text-xs px-2 py-1 rounded-lg hover:bg-primary/10"
   >
     + New
   </button>
   <button
     onClick={handleLogout}
-    className="text-[#94A3B8] hover:text-red-400 transition-colors text-xs px-2 py-1 rounded-lg hover:bg-red-400/10"
+    className="text-text-secondary hover:text-red-400 transition-colors text-xs px-2 py-1 rounded-lg hover:bg-red-400/10"
   >
     Logout
   </button>
@@ -108,11 +108,11 @@ const filtered = conversations.filter((c: Conversation) =>
       <div className="flex-1 overflow-y-auto">
         {isLoading ? (
           <div className="flex items-center justify-center h-32">
-            <div className="w-6 h-6 rounded-full border-2 border-[#06B6D4] border-t-transparent animate-spin" />
+            <div className="w-6 h-6 rounded-full border-2 border-primary border-t-transparent animate-spin" />
           </div>
         ) : filtered.length === 0 ? (
           <div className="flex flex-col items-center justify-center h-32 gap-2">
-            <p className="text-[#94A3B8] text-sm">No conversations yet</p>
+            <p className="text-text-secondary text-sm">No conversations yet</p>
           </div>
         ) : (
           filtered.map((conv: Conversation) => (
@@ -122,36 +122,36 @@ const filtered = conversations.filter((c: Conversation) =>
                 router.push(`/dashboard/chat/${conv.id}`);
                 onSelect?.();
               }}
-              className={`w-full flex items-center gap-3 px-4 py-3.5 hover:bg-[#0F1419]/50 transition-colors border-b border-[#334155]/50 text-left ${
-                activeId === conv.id ? "bg-[#0F1419]/70 border-l-2 border-l-[#06B6D4]" : ""
+              className={`w-full flex items-center gap-3 px-4 py-3.5 hover:bg-base/50 transition-colors border-b border-border/50 text-left ${
+                activeId === conv.id ? "bg-base/70 border-l-2 border-l-primary" : ""
               }`}
             >
               <div className="relative shrink-0">
-                <div className="w-11 h-11 rounded-full bg-linear-to-br from-[#8B5CF6] to-[#06B6D4] flex items-center justify-center text-white font-bold text-sm">
+                <div className="w-11 h-11 rounded-full bg-linear-to-br from-accent-purple to-primary flex items-center justify-center text-white font-bold text-sm">
                   {conv.otherUser?.name[0].toUpperCase()}
                 </div>
                 {conv.otherUser?.isOnline && (
-                  <span className="absolute bottom-0 right-0 w-3 h-3 bg-[#10B981] rounded-full border-2 border-[#1E2530]" />
+                  <span className="absolute bottom-0 right-0 w-3 h-3 bg-accent-green rounded-full border-2 border-secondary" />
                 )}
               </div>
               <div className="flex-1 min-w-0">
                 <div className="flex items-center justify-between mb-0.5">
-                  <p className="text-[#F1F5F9] text-sm font-medium truncate">{conv.otherUser?.name}</p>
+                  <p className="text-text-primary text-sm font-medium truncate">{conv.otherUser?.name}</p>
                   {conv.lastMessage && (
-                    <span className="text-[#94A3B8] text-xs shrink-0 ml-2">
+                    <span className="text-text-secondary text-xs shrink-0 ml-2">
                       {formatTime(conv.lastMessage.createdAt)}
                     </span>
                   )}
                 </div>
                 <div className="flex items-center justify-between">
-                  <p className="text-[#94A3B8] text-xs truncate max-w-[160px]">
+                  <p className="text-text-secondary text-xs truncate max-w-40">
 {conv.lastMessage?.content ??
   (conv.lastMessage && "fileUrl" in conv.lastMessage && conv.lastMessage.fileUrl
     ? "📎 File"
     : "No messages yet")}
                   </p>
                   {conv.unreadCount > 0 && (
-                    <span className="bg-[#06B6D4] text-white text-xs rounded-full w-5 h-5 flex items-center justify-center shrink-0 ml-1">
+                    <span className="bg-primary text-white text-xs rounded-full w-5 h-5 flex items-center justify-center shrink-0 ml-1">
                       {conv.unreadCount > 9 ? "9+" : conv.unreadCount}
                     </span>
                   )}
