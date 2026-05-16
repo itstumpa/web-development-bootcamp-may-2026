@@ -191,20 +191,15 @@ export default function ChatWindow({ conversationId }: { conversationId: string 
                   ? "bg-bubble-sent text-white rounded-tr-sm"
                   : "bg-secondary text-text-primary rounded-tl-sm border border-[#334155]"
               }`}>
-                {msg.fileUrl && msg.fileType === "image" && (
-                  // eslint-disable-next-line @next/next/no-img-element
-<img src={msg.fileUrl} alt="attachment" className="rounded-lg mb-2 max-w-full" />
-                )}
-                {msg.fileUrl && msg.fileType === "document" && (
-                  <Link
-                    href={msg.fileUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="flex items-center gap-2 text-xs underline mb-2"
-                  >
-                    📎 View document
-                  </Link>
-                )}
+               {msg.fileUrl && msg.fileType?.startsWith("image/") && (
+  // eslint-disable-next-line @next/next/no-img-element
+  <img src={msg.fileUrl} alt="attachment" className="rounded-lg mb-2 max-w-full" />
+)}
+{msg.fileUrl && msg.fileType && !msg.fileType.startsWith("image/") && (
+  <a href={msg.fileUrl} target="_blank" rel="noopener noreferrer" className="flex items-center gap-2 text-xs underline mb-2">
+    📎 View document
+  </a>
+)}
                 {msg.content && <p className="leading-relaxed">{msg.content}</p>}
                 <div className={`flex items-center gap-1 mt-1 ${isMine ? "justify-end" : "justify-start"}`}>
                   <span className={`text-[10px] ${isMine ? "text-white/60" : "text-[#94A3B8]"}`}>

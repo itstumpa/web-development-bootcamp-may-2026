@@ -16,7 +16,7 @@ export interface Message {
   senderId: string;
   content?: string;
   fileUrl?: string;
-  fileType?: "image" | "document";
+  fileType?: string | null;
   createdAt: string;
   read: boolean;
 }
@@ -38,5 +38,6 @@ export interface Conversation {
     senderId: string;
     createdAt: string;
     fileUrl?: string;
+    fileType?: string | null;
   };
 }
