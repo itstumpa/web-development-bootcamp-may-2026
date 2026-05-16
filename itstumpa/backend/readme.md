@@ -213,3 +213,22 @@ Test the API using:
 - [ ] Voice/video call integration
 - [ ] Message encryption
 - [ ] Push notifications
+
+```
+LiveChat is a full-stack real-time chat platform built with Node.js, Express, Socket.IO, Prisma, and PostgreSQL on the backend and Next.js 15, Redux Toolkit, and Tailwind CSS on the frontend. It features one-to-one messaging with real-time delivery, file sharing via Cloudinary, typing indicators, read receipts, and online/offline presence. The platform includes role-based access control with separate dashboards for users and admins, JWT authentication with httpOnly cookies, and is fully deployed on Render and Vercel.
+
+@itstumpa
+
+frontend: https://web-development-bootcamp-may-2026-one.vercel.app
+backend: https://web-development-bootcamp-may-2026-27eq.onrender.com
+
+super_admin= superadmin@livechat.com
+pass= Admin@123
+
+user 1=bob@example.com
+pass=password123
+
+user 2=alice@example.com
+pass=password123
+
+```
