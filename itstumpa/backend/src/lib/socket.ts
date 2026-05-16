@@ -8,12 +8,12 @@ import { prisma } from './prisma';
 let io: SocketIOServer;
 
 export const initSocket = (server: HTTPServer) => {
-  io = new SocketIOServer(server, {
-    cors: {
-      origin: process.env.CLIENT_URL || 'http://localhost:5000',
-      credentials: true,
-    },
-  });
+io = new SocketIOServer(server, {
+  cors: {
+    origin: process.env.FRONTEND_URL || process.env.CLIENT_URL || 'http://localhost:3000',
+    credentials: true,
+  },
+});
 
   // Authentication middleware
   io.use(async (socket, next) => {

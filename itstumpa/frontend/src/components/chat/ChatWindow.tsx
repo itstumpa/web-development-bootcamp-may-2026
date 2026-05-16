@@ -63,27 +63,27 @@ export default function ChatWindow({ conversationId }: { conversationId: string 
 
     socket.emit("join_conversation", conversationId);
 
-    socket.on("new_message", (msg: Message) => {
-      if (msg.conversationId === conversationId) {
-        dispatch(appendMessage(msg));
-        dispatch(updateLastMessage({ conversationId, message: msg }));
-        if (msg.senderId !== user?.id) dispatch(incrementUnread(conversationId));
-      }
-    });
+socket.on("receive_message", (msg: Message) => {
+  if (msg.conversationId === conversationId) {
+    dispatch(appendMessage(msg));
+    dispatch(updateLastMessage({ conversationId, message: msg }));
+    if (msg.senderId !== user?.id) dispatch(incrementUnread(conversationId));
+  }
+});
 
-    socket.on("typing", ({ userId }: { userId: string }) => {
-      if (userId !== user?.id) setIsTyping(true);
-    });
+socket.on("user_typing", ({ userId: typingUserId }: { userId: string }) => {
+  if (typingUserId !== user?.id) setIsTyping(true);
+});
 
-    socket.on("stop_typing", ({ userId }: { userId: string }) => {
-      if (userId !== user?.id) setIsTyping(false);
-    });
+socket.on("user_stopped_typing", ({ userId: typingUserId }: { userId: string }) => {
+  if (typingUserId !== user?.id) setIsTyping(false);
+});
 
     return () => {
       socket.emit("leave_conversation", conversationId);
-      socket.off("new_message");
-      socket.off("typing");
-      socket.off("stop_typing");
+      socket.off("receive_message");
+      socket.off("user_typing");
+      socket.off("user_stopped_typing");
     };
   }, [conversationId, dispatch, user?.id]);
 
@@ -114,10 +114,10 @@ export default function ChatWindow({ conversationId }: { conversationId: string 
 
   const emitTyping = () => {
     const socket = getSocket();
-    socket?.emit("typing", { conversationId });
+    socket?.emit("user_typing", { conversationId });
     if (typingTimeout.current) clearTimeout(typingTimeout.current);
     typingTimeout.current = setTimeout(() => {
-      socket?.emit("stop_typing", { conversationId });
+      socket?.emit("user_stopped_typing", { conversationId });
     }, 1500);
   };
 
