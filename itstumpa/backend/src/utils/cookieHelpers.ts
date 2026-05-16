@@ -3,7 +3,7 @@ import { Response } from "express";
 const cookieOptions = {
   httpOnly: true,
   secure: process.env.NODE_ENV === "production",
-  sameSite: process.env.NODE_ENV === "production" ? ("none" as const) : ("strict" as const),
+  sameSite:  "none" as const,
   path: "/",
 };
 

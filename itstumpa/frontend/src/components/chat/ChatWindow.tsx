@@ -186,8 +186,8 @@ export default function ChatWindow({ conversationId }: { conversationId: string 
             <div key={msg.id} className={`flex ${isMine ? "justify-end" : "justify-start"}`}>
               <div className={`max-w-[75%] sm:max-w-[60%] px-4 py-2.5 rounded-2xl text-sm ${
                 isMine
-                  ? "bg-[#0E7490] text-white rounded-tr-sm"
-                  : "bg-[#1E2530] text-[#F1F5F9] rounded-tl-sm border border-[#334155]"
+                  ? "bg-bubble-sent text-white rounded-tr-sm"
+                  : "bg-secondary text-text-primary rounded-tl-sm border border-[#334155]"
               }`}>
                 {msg.fileUrl && msg.fileType === "image" && (
                   // eslint-disable-next-line @next/next/no-img-element
@@ -228,11 +228,11 @@ export default function ChatWindow({ conversationId }: { conversationId: string 
       )}
 
       {/* Input */}
-      <div className="px-4 py-4 border-t border-[#334155] bg-[#1E2530] shrink-0">
+      <div className="px-4 py-4 border-t border-border bg-secondary shrink-0">
         <div className="flex items-end gap-2">
           <button
             onClick={() => fileRef.current?.click()}
-            className="shrink-0 w-10 h-10 rounded-xl bg-[#0F1419] border border-[#334155] flex items-center justify-center text-[#94A3B8] hover:text-[#06B6D4] hover:border-[#06B6D4] transition-colors"
+            className="shrink-0 w-10 h-10 rounded-xl bg-base border border-[#334155] flex items-center justify-center text-[#94A3B8] hover:text-[#06B6D4] hover:border-[#06B6D4] transition-colors"
           >
             📎
           </button>
@@ -249,7 +249,7 @@ export default function ChatWindow({ conversationId }: { conversationId: string 
             onKeyDown={handleKeyDown}
             placeholder="Type a message..."
             rows={1}
-            className="flex-1 bg-[#0F1419] border border-[#334155] rounded-xl px-4 py-2.5 text-[#F1F5F9] text-sm placeholder:text-[#94A3B8] focus:outline-none focus:border-[#06B6D4] transition-colors resize-none max-h-32"
+            className="flex-1 bg-base border border-border rounded-xl px-4 py-2.5 text-[#F1F5F9] text-sm placeholder:text-[#94A3B8] focus:outline-none focus:border-[#06B6D4] transition-colors resize-none max-h-32"
           />
           <button
             onClick={handleSend}
