@@ -30,9 +30,33 @@
 
 
 // src/utils/sendEmail.ts
-import { Resend } from "resend";
+// import { Resend } from "resend";
 
-const resend = new Resend(process.env.RESEND_API_KEY);
+// const resend = new Resend(process.env.RESEND_API_KEY);
+
+// interface EmailOptions {
+//   to: string;
+//   subject: string;
+//   html: string;
+// }
+
+// export const sendEmail = async (options: EmailOptions): Promise<void> => {
+//   await resend.emails.send({
+//     from: "LiveChat <onboarding@resend.dev>",
+//     to: options.to,
+//     subject: options.subject,
+//     html: options.html,
+//   });
+// };
+
+
+import * as Brevo from "@getbrevo/brevo";
+
+const client = new Brevo.TransactionalEmailsApi();
+client.setApiKey(
+  Brevo.TransactionalEmailsApiApiKeys.apiKey,
+  process.env.BREVO_API_KEY as string
+);
 
 interface EmailOptions {
   to: string;
@@ -41,10 +65,11 @@ interface EmailOptions {
 }
 
 export const sendEmail = async (options: EmailOptions): Promise<void> => {
-  await resend.emails.send({
-    from: "LiveChat <onboarding@resend.dev>",
-    to: options.to,
-    subject: options.subject,
-    html: options.html,
-  });
+  const sendSmtpEmail = new Brevo.SendSmtpEmail();
+  sendSmtpEmail.to = [{ email: options.to }];
+  sendSmtpEmail.subject = options.subject;
+  sendSmtpEmail.htmlContent = options.html;
+  sendSmtpEmail.sender = { name: "LiveChat", email: process.env.BREVO_SENDER_EMAIL };
+
+  await client.sendTransacEmail(sendSmtpEmail);
 };
