@@ -2,7 +2,10 @@
 
 A real-time chat platform with file sharing and admin moderation built with Node.js, Express, Socket.IO, and Prisma.
 
-## Live Demo: https://web-development-bootcamp-may-2026-27eq.onrender.com
+## Live Backend: https://web-development-bootcamp-may-2026-27eq.onrender.com
+
+## Live frontend: https://web-development-bootcamp-may-2026-one.vercel.app
+
 ## GitHub Repo: https://github.com/itstumpa/web-development-bootcamp-may-2026
 
 
