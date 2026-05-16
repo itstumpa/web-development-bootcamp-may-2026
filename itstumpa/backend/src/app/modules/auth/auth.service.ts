@@ -56,16 +56,16 @@ export const signup = async (data: {
     select: { id: true, name: true, email: true, role: true },
   });
 
-  const verifyUrl = `${process.env.APP_URL}/api/v1/auth/verify-email?token=${emailVerifyToken}`;
+const verifyUrl = `${process.env.APP_URL}/api/v1/auth/verify-email?token=${emailVerifyToken}`;
 
-  await sendEmail({
-    to: user.email,
-    subject: "Verify your account",
-    html: `<p>Hi ${user.name},</p>
-           <p>Click the link below to verify your email:</p>
-           <a href="${verifyUrl}">${verifyUrl}</a>
-           <p>This link expires in 24 hours.</p>`,
-  });
+sendEmail({
+  to: user.email,
+  subject: "Verify your account",
+  html: `<p>Hi ${user.name},</p>
+         <p>Click the link below to verify your email:</p>
+         <a href="${verifyUrl}">${verifyUrl}</a>
+         <p>This link expires in 24 hours.</p>`,
+}).catch((err) => console.error("Email send failed:", err));
 
   return user;
 };
