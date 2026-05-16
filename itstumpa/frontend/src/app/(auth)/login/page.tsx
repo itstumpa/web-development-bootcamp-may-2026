@@ -132,7 +132,7 @@ console.log("REDIRECTING TO:", user.role === "USER" ? "/dashboard" : "/admin");
             <button
               type="submit"
               disabled={isSubmitting}
-              className="w-full py-3 rounded-xl font-semibold text-white bg-linear-to-r from-[#8B5CF6] via-[#06B6D4] to-[#10B981] hover:opacity-90 transition-opacity disabled:opacity-50 disabled:cursor-not-allowed text-sm mt-1"
+              className="w-full py-3 rounded-xl font-semibold font-semibold text-white bg-[#8B5CF6] hover:bg-[#7C3AED] transition-colors shadow-lg shadow-[#8B5CF6]/20 text-md mt-1"
             >
               {isSubmitting ? "Signing in..." : "Sign In"}
             </button>
