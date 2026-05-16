@@ -50,13 +50,11 @@
 // };
 
 
-import * as Brevo from "@getbrevo/brevo";
+import { BrevoClient } from "@getbrevo/brevo";
 
-const client = new Brevo.TransactionalEmailsApi();
-client.setApiKey(
-  Brevo.TransactionalEmailsApiApiKeys.apiKey,
-  process.env.BREVO_API_KEY as string
-);
+const client = new BrevoClient({
+  apiKey: process.env.BREVO_API_KEY as string,
+});
 
 interface EmailOptions {
   to: string;
@@ -65,11 +63,13 @@ interface EmailOptions {
 }
 
 export const sendEmail = async (options: EmailOptions): Promise<void> => {
-  const sendSmtpEmail = new Brevo.SendSmtpEmail();
-  sendSmtpEmail.to = [{ email: options.to }];
-  sendSmtpEmail.subject = options.subject;
-  sendSmtpEmail.htmlContent = options.html;
-  sendSmtpEmail.sender = { name: "LiveChat", email: process.env.BREVO_SENDER_EMAIL };
-
-  await client.sendTransacEmail(sendSmtpEmail);
+  await client.transactionalEmails.sendTransacEmail({
+    to: [{ email: options.to }],
+    subject: options.subject,
+    htmlContent: options.html,
+    sender: {
+      name: "LiveChat",
+      email: process.env.BREVO_SENDER_EMAIL as string,
+    },
+  });
 };
