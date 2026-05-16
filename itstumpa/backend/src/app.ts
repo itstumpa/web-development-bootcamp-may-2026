@@ -19,6 +19,7 @@ app.use(
   cors({
     origin: config.frontend_url,
     credentials: true,
+    exposedHeaders: ["Set-Cookie"],
   }),
 );
 
