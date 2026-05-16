@@ -1,15 +1,15 @@
 "use client";
 
-import Link from "next/link";
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { z } from "zod";
-import api from "@/lib/axios";
 import { useAppDispatch } from "@/hooks/redux";
-import { setUser } from "@/store/slices/authSlice";
+import api from "@/lib/axios";
 import { connectSocket } from "@/lib/socket";
+import { setUser } from "@/store/slices/authSlice";
+import { zodResolver } from "@hookform/resolvers/zod";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useForm } from "react-hook-form";
+import { z } from "zod";
 
 const loginSchema = z.object({
   email: z.string().email("Invalid email"),
@@ -23,7 +23,11 @@ export default function LoginPage() {
   const router = useRouter();
   const [error, setError] = useState<string | null>(null);
 
-  const { register, handleSubmit, formState: { errors, isSubmitting } } = useForm<LoginForm>({
+  const {
+    register,
+    handleSubmit,
+    formState: { errors, isSubmitting },
+  } = useForm<LoginForm>({
     resolver: zodResolver(loginSchema),
   });
 
@@ -32,7 +36,7 @@ export default function LoginPage() {
       setError(null);
       const res = await api.post("/auth/signin", data);
       console.log("LOGIN RES:", res.data);
-      const user = res.data.data.user;
+      const user = res.data.data;
       dispatch(setUser(user));
       connectSocket();
       if (user.role === "USER") {
@@ -41,7 +45,8 @@ export default function LoginPage() {
         router.push("/admin");
       }
     } catch (err: unknown) {
-      const message = err instanceof Error ? err.message : "Invalid credentials";
+      const message =
+        err instanceof Error ? err.message : "Invalid credentials";
       setError(message);
     }
   };
@@ -62,7 +67,9 @@ export default function LoginPage() {
               LiveChat
             </span>
           </Link>
-          <h1 className="text-2xl font-bold text-[#F1F5F9] mt-6 mb-1">Welcome back</h1>
+          <h1 className="text-2xl font-bold text-[#F1F5F9] mt-6 mb-1">
+            Welcome back
+          </h1>
           <p className="text-[#94A3B8] text-sm">Sign in to your account</p>
         </div>
 
@@ -73,22 +80,36 @@ export default function LoginPage() {
             </div>
           )}
 
-          <form onSubmit={handleSubmit(onSubmit)} className="flex flex-col gap-5">
+          <form
+            onSubmit={handleSubmit(onSubmit)}
+            className="flex flex-col gap-5"
+          >
             <div>
-              <label className="text-sm font-medium text-[#F1F5F9] block mb-1.5">Email</label>
+              <label className="text-sm font-medium text-[#F1F5F9] block mb-1.5">
+                Email
+              </label>
               <input
                 {...register("email")}
                 type="email"
                 placeholder="you@example.com"
                 className="w-full bg-[#0F1419] border border-[#334155] rounded-xl px-4 py-3 text-[#F1F5F9] text-sm placeholder:text-[#94A3B8] focus:outline-none focus:border-[#06B6D4] transition-colors"
               />
-              {errors.email && <p className="text-red-400 text-xs mt-1">{errors.email.message}</p>}
+              {errors.email && (
+                <p className="text-red-400 text-xs mt-1">
+                  {errors.email.message}
+                </p>
+              )}
             </div>
 
             <div>
               <div className="flex items-center justify-between mb-1.5">
-                <label className="text-sm font-medium text-[#F1F5F9]">Password</label>
-                <Link href="/forgot-password" className="text-xs text-[#06B6D4] hover:text-[#22D3EE] transition-colors">
+                <label className="text-sm font-medium text-[#F1F5F9]">
+                  Password
+                </label>
+                <Link
+                  href="/forgot-password"
+                  className="text-xs text-[#06B6D4] hover:text-[#22D3EE] transition-colors"
+                >
                   Forgot password?
                 </Link>
               </div>
@@ -98,7 +119,11 @@ export default function LoginPage() {
                 placeholder="••••••••"
                 className="w-full bg-[#0F1419] border border-[#334155] rounded-xl px-4 py-3 text-[#F1F5F9] text-sm placeholder:text-[#94A3B8] focus:outline-none focus:border-[#06B6D4] transition-colors"
               />
-              {errors.password && <p className="text-red-400 text-xs mt-1">{errors.password.message}</p>}
+              {errors.password && (
+                <p className="text-red-400 text-xs mt-1">
+                  {errors.password.message}
+                </p>
+              )}
             </div>
 
             <button
@@ -112,7 +137,10 @@ export default function LoginPage() {
 
           <p className="text-center text-sm text-[#94A3B8] mt-6">
             Don&apos;t have an account?{" "}
-            <Link href="/signup" className="text-[#06B6D4] hover:text-[#22D3EE] font-medium transition-colors">
+            <Link
+              href="/signup"
+              className="text-[#06B6D4] hover:text-[#22D3EE] font-medium transition-colors"
+            >
               Sign up
             </Link>
           </p>
