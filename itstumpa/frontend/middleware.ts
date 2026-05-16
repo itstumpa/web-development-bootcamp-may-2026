@@ -2,7 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 
 const publicRoutes = ["/", "/login", "/signup", "/verify-email", "/forgot-password"];
 
-export async function proxy(request: NextRequest) {
+export async function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   const isPublic = publicRoutes.some((route) => pathname === route);

@@ -92,6 +92,7 @@ Open [http://localhost:3000](http://localhost:3000)
 | `SUPER_ADMIN` | `/admin` (full access) |
 
 Route protection is handled via `proxy.ts` (Next.js 16 middleware).
+Now change to middleware.ts, because vercel didnt accept proxy.ts
 
 ---
 
