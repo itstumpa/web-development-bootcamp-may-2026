@@ -66,7 +66,7 @@ export default function NewChatModal({ onClose }: { onClose: () => void }) {
   const handleStart = async (userId: string) => {
     setIsStarting(userId);
     try {
-      const res = await api.post("/chat/conversations", { participantId: userId });
+      const res = await api.post("/chat/conversations", { otherUserId: userId });
       const conv = res.data.data;
       router.push(`/dashboard/chat/${conv.id}`);
       onClose();
