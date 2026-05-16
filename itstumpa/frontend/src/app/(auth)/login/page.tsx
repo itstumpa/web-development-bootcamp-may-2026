@@ -36,8 +36,10 @@ export default function LoginPage() {
       setError(null);
       const res = await api.post("/auth/signin", data);
       console.log("LOGIN RES:", res.data);
-      const raw = res.data.data;
+const raw = res.data.data;
 const user = raw.user ?? raw;
+console.log("USER ROLE:", user.role);
+console.log("REDIRECTING TO:", user.role === "USER" ? "/dashboard" : "/admin");
       dispatch(setUser(user));
       connectSocket();
       if (user.role === "USER") {
