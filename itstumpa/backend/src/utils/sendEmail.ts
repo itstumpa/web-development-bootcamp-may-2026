@@ -1,5 +1,45 @@
 // src/utils/sendEmail.ts
-import nodemailer from "nodemailer";
+// import nodemailer from "nodemailer";
+
+// interface EmailOptions {
+//   to: string;
+//   subject: string;
+//   html: string;
+// }
+
+// export const sendEmail = async (options: EmailOptions): Promise<void> => {
+//   const transporter = nodemailer.createTransport({
+//     host: process.env.SMTP_HOST,
+//     port: Number(process.env.SMTP_PORT),
+//     secure: false,
+//     auth: {
+//       user: process.env.SMTP_USER,
+//       pass: process.env.SMTP_PASS,
+//     },
+//       connectionTimeout: 10000,
+//   greetingTimeout: 10000,
+//   });
+
+//   await transporter.sendMail({
+//     from: `"LiveChat" <${process.env.SMTP_USER}>`,
+//     to: options.to,
+//     subject: options.subject,
+//     html: options.html,
+//   });
+// };
+
+
+// src/utils/sendEmail.ts
+import { Resend } from "resend";
+
+interface EmailOptions {
+  to: string;
+  subject: string;
+  html: string;
+}
+
+
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 interface EmailOptions {
   to: string;
@@ -8,20 +48,8 @@ interface EmailOptions {
 }
 
 export const sendEmail = async (options: EmailOptions): Promise<void> => {
-  const transporter = nodemailer.createTransport({
-    host: process.env.SMTP_HOST,
-    port: Number(process.env.SMTP_PORT),
-    secure: false,
-    auth: {
-      user: process.env.SMTP_USER,
-      pass: process.env.SMTP_PASS,
-    },
-      connectionTimeout: 10000,
-  greetingTimeout: 10000,
-  });
-
-  await transporter.sendMail({
-    from: `"LiveChat" <${process.env.SMTP_USER}>`,
+  await resend.emails.send({
+    from: "LiveChat <onboarding@resend.dev>",
     to: options.to,
     subject: options.subject,
     html: options.html,
