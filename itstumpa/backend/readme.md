@@ -9,9 +9,6 @@ A real-time chat platform with file sharing and admin moderation built with Node
 ## GitHub Repo: https://github.com/itstumpa/web-development-bootcamp-may-2026
 
 
-## 👩‍💻 Author
-**Tumpa Das**
-
 ## 📋 Table of Contents
 - [Features](#features)
 - [Tech Stack](#tech-stack)
