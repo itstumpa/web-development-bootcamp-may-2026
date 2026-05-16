@@ -18,7 +18,8 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
     const checkAuth = async () => {
       try {
         const res = await api.get("/auth/me");
-        const user = res.data.data;
+        const raw = res.data.data;
+const user = raw.user ?? raw;
         if (user.role === "USER") {
           router.replace("/dashboard");
           return;
