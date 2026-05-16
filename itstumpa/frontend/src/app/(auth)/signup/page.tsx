@@ -29,6 +29,8 @@ export default function SignupPage() {
   });
 
   const onSubmit = async (data: SignupForm) => {
+  console.log("SUBMIT CALLED", data);
+  console.log("ERRORS:", errors);
     try {
       setError(null);
       await api.post("/auth/signup", {
