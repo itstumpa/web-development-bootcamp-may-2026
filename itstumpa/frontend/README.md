@@ -4,6 +4,8 @@ A real-time chat platform frontend built with Next.js 16, TypeScript, and Socket
 
 ---
 
+## live: https://web-development-bootcamp-may-2026-one.vercel.app
+
 ## Tech Stack
 
 | Layer | Technology |
