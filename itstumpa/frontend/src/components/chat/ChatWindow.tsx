@@ -181,7 +181,9 @@ export default function ChatWindow({ conversationId }: { conversationId: string 
           </div>
         )}
         {messages.map((msg: Message) => {
-          const isMine = msg.senderId === user?.id;
+         console.log("MSG:", JSON.stringify(msg));
+  console.log("USER ID:", user?.id);
+  const isMine = msg.senderId === user?.id;
           return (
             <div key={msg.id} className={`flex ${isMine ? "justify-end" : "justify-start"}`}>
               <div className={`max-w-[75%] sm:max-w-[60%] px-4 py-2.5 rounded-2xl text-sm ${
@@ -226,6 +228,7 @@ export default function ChatWindow({ conversationId }: { conversationId: string 
           <button onClick={() => setFile(null)} className="text-red-400 text-xs hover:text-red-300">✕</button>
         </div>
       )}
+      
 
       {/* Input */}
       <div className="px-4 py-4 border-t border-border bg-secondary shrink-0">
