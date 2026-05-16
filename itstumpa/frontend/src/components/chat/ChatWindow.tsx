@@ -190,7 +190,8 @@ export default function ChatWindow({ conversationId }: { conversationId: string 
                   : "bg-[#1E2530] text-[#F1F5F9] rounded-tl-sm border border-[#334155]"
               }`}>
                 {msg.fileUrl && msg.fileType === "image" && (
-                  <img src={msg.fileUrl} alt="attachment" className="rounded-lg mb-2 max-w-full" />
+                  // eslint-disable-next-line @next/next/no-img-element
+<img src={msg.fileUrl} alt="attachment" className="rounded-lg mb-2 max-w-full" />
                 )}
                 {msg.fileUrl && msg.fileType === "document" && (
                   <Link
