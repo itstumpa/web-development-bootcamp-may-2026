@@ -31,6 +31,7 @@ export default function LoginPage() {
     try {
       setError(null);
       const res = await api.post("/auth/signin", data);
+      console.log("LOGIN RES:", res.data);
       const user = res.data.data.user;
       dispatch(setUser(user));
       connectSocket();
